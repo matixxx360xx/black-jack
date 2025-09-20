@@ -5,6 +5,8 @@ class Karty{
         this.karta = 0;
         this.mojeKarty = "";
         this.krupierKarty = ""
+        this.sumaMoje = 0;     
+        this.sumaKrupier = 0;
 
     }
 
@@ -30,7 +32,7 @@ class Karty{
     }
     }
       wypiszTalie() {
-        console.log(this.talia);
+            (this.talia);
         console.log("Liczba kart:", this.talia.length);
         return this.talia;
     }
@@ -38,14 +40,48 @@ class Karty{
   
     rozdajkarty(){
         for(let i = 0; i < 2; i++){
-            this.mojeKarty+= this.talia[i * 2]; 
-            this.krupierKarty+= this.talia[i * 2 + 1]
+            this.mojeKarty+=  (i > 0 ? "," : "")+this.talia[i * 2]; 
+            this.krupierKarty+= (i > 0 ? "," : "")+this.talia[i * 2 + 1]
         } 
         return{
         mojeKarty: this.mojeKarty,
         krupierKarty: this.krupierKarty
         };
     }
+
+    wyniki(){
+        let m = this.mojeKarty.split(",");
+        let k = this.krupierKarty.split(",");
+
+        let sumaMoje = 0;
+        let sumaKrupier = 0;
+
+        for (let i = 0; i < m.length; i++) {
+            let val = m[i].split("-")[1];
+
+            if (!isNaN(parseInt(val))) sumaMoje += parseInt(val);
+            else if (["K", "Q", "J"].includes(val)) sumaMoje += 10;
+            else if (val === "A") sumaMoje += 11;
+        }
+
+        for (let i = 0; i < k.length; i++) {
+            let val = k[i].split("-")[1];
+
+            if (!isNaN(parseInt(val))) sumaKrupier += parseInt(val);
+            else if (["K", "Q", "J"].includes(val)) sumaKrupier += 10;
+            else if (val === "A") sumaKrupier += 11;
+        }
+            this.sumaMoje = sumaMoje;
+            this.sumaKrupier = sumaKrupier;
+        return{
+        sumaMoje: this.sumaMoje,
+        sumaKrupier: this.sumaKrupier
+        };
+
+
+    }
+
+
 }
 
     const karty = new Karty()
@@ -60,6 +96,11 @@ class Karty{
         document.getElementById("mojekarty").innerHTML = "Moje Karty: " + rozdaneKarty.mojeKarty;
         document.getElementById("krupierkarty").innerHTML = "Karty Krupiera: " + rozdaneKarty.krupierKarty;
     }
+    function wyniki(){
+           const wynik = karty.wyniki();
+            document.getElementById("krupierwynik").innerHTML = "krupierwynik " +  wynik.sumaMoje;
+            document.getElementById("mojwynik").innerHTML = "wynik moj: " +  wynik.sumaKrupier;
+    }
 
 
 
@@ -71,4 +112,5 @@ class Karty{
 window.onload = function() {
     card();
     rozdajkarty();
+    wyniki();
 };
