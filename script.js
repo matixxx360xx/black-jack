@@ -32,7 +32,6 @@ class Karty{
     }
     }
       wypiszTalie() {
-            (this.talia);
         console.log("Liczba kart:", this.talia.length);
         return this.talia;
     }
@@ -40,8 +39,11 @@ class Karty{
   
     rozdajkarty(){
         for(let i = 0; i < 2; i++){
-            this.mojeKarty+=  (i > 0 ? "," : "")+this.talia[i * 2]; 
-            this.krupierKarty+= (i > 0 ? "," : "")+this.talia[i * 2 + 1]
+            let moja = this.talia.splice(0,1)[0];   
+            let krupier = this.talia.splice(0,1)[0]; 
+
+            this.mojeKarty += (i > 0 ? "," : "") + moja; 
+            this.krupierKarty += (i > 0 ? "," : "") + krupier;
         } 
         return{
         mojeKarty: this.mojeKarty,
@@ -56,20 +58,20 @@ class Karty{
         let sumaMoje = 0;
         let sumaKrupier = 0;
 
-        for (let i = 0; i < m.length; i++) {
+        for(let i = 0; i < m.length; i++){
             let val = m[i].split("-")[1];
 
-            if (!isNaN(parseInt(val))) sumaMoje += parseInt(val);
-            else if (["K", "Q", "J"].includes(val)) sumaMoje += 10;
-            else if (val === "A") sumaMoje += 11;
+            if(!isNaN(parseInt(val))) sumaMoje += parseInt(val);
+            else if(["K", "Q", "J"].includes(val)) sumaMoje += 10;
+            else if(val === "A") sumaMoje += 11;
         }
 
-        for (let i = 0; i < k.length; i++) {
+        for(let i = 0; i < k.length; i++){
             let val = k[i].split("-")[1];
 
-            if (!isNaN(parseInt(val))) sumaKrupier += parseInt(val);
-            else if (["K", "Q", "J"].includes(val)) sumaKrupier += 10;
-            else if (val === "A") sumaKrupier += 11;
+            if(!isNaN(parseInt(val))) sumaKrupier += parseInt(val);
+            else if(["K", "Q", "J"].includes(val)) sumaKrupier += 10;
+            else if(val === "A") sumaKrupier += 11;
         }
             this.sumaMoje = sumaMoje;
             this.sumaKrupier = sumaKrupier;
@@ -79,6 +81,12 @@ class Karty{
         };
 
 
+    }
+
+    dodajKarte(){
+        let karta = this.talia.splice(0,1)[0]; 
+        this.mojeKarty += "," + karta; 
+        return this.mojeKarty;
     }
 
 
@@ -95,15 +103,21 @@ class Karty{
         const rozdaneKarty = karty.rozdajkarty();
         document.getElementById("mojekarty").innerHTML = "Moje Karty: " + rozdaneKarty.mojeKarty;
         document.getElementById("krupierkarty").innerHTML = "Karty Krupiera: " + rozdaneKarty.krupierKarty;
+         document.getElementById("karty").innerHTML = karty.wypiszTalie();
     }
     function wyniki(){
            const wynik = karty.wyniki();
-            document.getElementById("krupierwynik").innerHTML = "krupierwynik " +  wynik.sumaMoje;
-            document.getElementById("mojwynik").innerHTML = "wynik moj: " +  wynik.sumaKrupier;
+            document.getElementById("krupierwynik").innerHTML = "wynik moj:" +  wynik.sumaMoje;
+            document.getElementById("mojwynik").innerHTML = "krupierwynik  " +  wynik.sumaKrupier;
     }
 
 
-
+    function dajKarte(){
+        karty.dodajKarte();
+        document.getElementById("mojekarty").innerHTML = "Moje Karty: " + karty.mojeKarty;
+         document.getElementById("karty").innerHTML = karty.wypiszTalie();
+        wyniki(); 
+    }
 
 
 
