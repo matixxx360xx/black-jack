@@ -51,6 +51,18 @@ class Karty{
         };
     }
 
+    noweRozdanie(){
+        this.mojeKarty = "";
+        this.krupierKarty = "";
+        for(let i = 0; i < 2; i++){
+            let moja = this.talia.splice(0,1)[0];   
+            let krupier = this.talia.splice(0,1)[0]; 
+
+            this.mojeKarty += (i > 0 ? "," : "") + moja; 
+            this.krupierKarty += (i > 0 ? "," : "") + krupier;
+        } 
+    }
+
     wyniki(){
         let m = this.mojeKarty.split(",");
         let k = this.krupierKarty.split(",");
@@ -83,11 +95,41 @@ class Karty{
 
     }
 
-    dodajKarte(){
-        let karta = this.talia.splice(0,1)[0]; 
-        this.mojeKarty += "," + karta; 
-        return this.mojeKarty;
+    generujHTMLKarty(kartyArray) {
+        return kartyArray.map(karta => {
+            return `<img src="image/${karta}.svg" alt="${karta}">`;
+        }).join("");
     }
+
+    MojeKartyHTML() {
+        return this.generujHTMLKarty(this.mojeKarty.split(","));
+        
+    }
+
+    KrupierKartyHTML() {
+        return this.generujHTMLKarty(this.krupierKarty.split(","));
+    }
+
+    dodajKarte(){
+        if(this.talia.length > 0){
+        let karta = this.talia.splice(0, 1)[0];
+        return karta; 
+        }
+    }
+
+    
+    Pass(){
+        if(this.sumaMoje > this.sumaKrupier){
+            return "wygrana"
+        }else if(this.sumaMoje == this.sumaKrupier){
+            return "remis"
+        }else if(this.sumaMoje < this.sumaKrupier){
+            return "przegrana"
+           
+        }
+        
+    }
+    
 
 
 }
@@ -100,9 +142,9 @@ class Karty{
     }
 
     function rozdajkarty(){
-        const rozdaneKarty = karty.rozdajkarty();
-        document.getElementById("mojekarty").innerHTML = "Moje Karty: " + rozdaneKarty.mojeKarty;
-        document.getElementById("krupierkarty").innerHTML = "Karty Krupiera: " + rozdaneKarty.krupierKarty;
+        karty.rozdajkarty();
+        document.getElementById("mojekarty").innerHTML =  karty.MojeKartyHTML();    
+        document.getElementById("krupierkarty").innerHTML = karty.KrupierKartyHTML();  
          document.getElementById("karty").innerHTML = karty.wypiszTalie();
     }
     function wyniki(){
@@ -113,12 +155,31 @@ class Karty{
 
 
     function dajKarte(){
-        karty.dodajKarte();
-        document.getElementById("mojekarty").innerHTML = "Moje Karty: " + karty.mojeKarty;
-         document.getElementById("karty").innerHTML = karty.wypiszTalie();
+      
+    const karta = karty.dodajKarte(); 
+    const kartaHTML = karty.generujHTMLKarty([karta]); 
+    
+    document.getElementById("mojekarty").innerHTML += kartaHTML;
+    document.getElementById("karty").innerHTML = karty.wypiszTalie();
+    wyniki();
+        
+    }
+
+    function Reset(){
+        karty.noweRozdanie();
+        document.getElementById("mojekarty").innerHTML =  karty.getMojeKartyHTML();    
+        document.getElementById("krupierkarty").innerHTML = karty.getKrupierKartyHTML();  
+        document.getElementById("karty").innerHTML = karty.wypiszTalie();
+        document.getElementById("wynik-gry").style.display = "none";
         wyniki(); 
     }
 
+    function Pass(){
+        document.getElementById("wynik-gry").style.display = "block";
+        document.getElementById("wynik-gry").innerHTML = karty.Pass();
+    }
+
+    
 
 
 

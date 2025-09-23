@@ -11,13 +11,28 @@
     <div id="karty"></div>
 
     
-    <input type="button" value="Daj" onclick="dajKarte()">
-     <input type="button" value="stop" onclick="Stop()">
-     <p>moje karty</p>
-    <div id="mojekarty"></div>
-    <p>krupier karty</p>
-     <div id="krupierkarty"></div>
-                                <div id="krupierwynik">wynik krupier:</div>
-                                <div id="mojwynik">wynik moj:</div>
+<div class="game-info">
+    <div id="krupierwynik" class="score">wynik krupier:</div>
+    <div id="mojwynik" class="score">wynik moj:</div>
+  
+</div>
+<div class="cards-section">
+     <div class="dealer-cards">
+        <p>krupier karty</p>
+        <div id="krupierkarty"></div>
+    </div>
+    <div id="wynik-gry" class="result">kto wygral:</div>
+    <div class="player-cards">
+        <p>moje karty</p>
+        <div id="mojekarty"></div>
+    </div>
+   
+</div>
+<div class="controls">
+    <input type="button" class="btn-card" value="karta" onclick="dajKarte()">
+    <input type="button" class="btn-pass" value="Pass" onclick="Pass()">
+    <input type="button" class="btn-reset" value="Reset" onclick="Reset()">
+</div>
+
 </body>
 </html>
