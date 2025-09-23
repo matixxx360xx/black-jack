@@ -113,6 +113,7 @@ class Karty{
     dodajKarte(){
         if(this.talia.length > 0){
         let karta = this.talia.splice(0, 1)[0];
+        this.mojeKarty += (this.mojeKarty ? "," : "") + karta;
         return karta; 
         }
     }
@@ -142,13 +143,13 @@ class Karty{
     }
 
     function rozdajkarty(){
-        karty.rozdajkarty();
-        document.getElementById("mojekarty").innerHTML =  karty.MojeKartyHTML();    
-        document.getElementById("krupierkarty").innerHTML = karty.KrupierKartyHTML();  
-         document.getElementById("karty").innerHTML = karty.wypiszTalie();
+            karty.rozdajkarty();
+            document.getElementById("mojekarty").innerHTML =  karty.MojeKartyHTML();    
+            document.getElementById("krupierkarty").innerHTML = karty.KrupierKartyHTML();  
+            document.getElementById("karty").innerHTML = karty.wypiszTalie();
     }
     function wyniki(){
-           const wynik = karty.wyniki();
+            const wynik = karty.wyniki();
             document.getElementById("krupierwynik").innerHTML = "wynik moj:" +  wynik.sumaMoje;
             document.getElementById("mojwynik").innerHTML = "krupierwynik  " +  wynik.sumaKrupier;
     }
@@ -156,22 +157,23 @@ class Karty{
 
     function dajKarte(){
       
-    const karta = karty.dodajKarte(); 
-    const kartaHTML = karty.generujHTMLKarty([karta]); 
-    
-    document.getElementById("mojekarty").innerHTML += kartaHTML;
-    document.getElementById("karty").innerHTML = karty.wypiszTalie();
-    wyniki();
+        const karta = karty.dodajKarte(); 
+        const kartaHTML = karty.generujHTMLKarty([karta]); 
+        document.getElementById("mojekarty").innerHTML += kartaHTML;
+        document.getElementById("karty").innerHTML = karty.wypiszTalie();
+        wyniki()
+  
         
     }
 
     function Reset(){
         karty.noweRozdanie();
-        document.getElementById("mojekarty").innerHTML =  karty.getMojeKartyHTML();    
-        document.getElementById("krupierkarty").innerHTML = karty.getKrupierKartyHTML();  
+        document.getElementById("mojekarty").innerHTML =  karty.MojeKartyHTML();    
+        document.getElementById("krupierkarty").innerHTML = karty.KrupierKartyHTML();  
         document.getElementById("karty").innerHTML = karty.wypiszTalie();
         document.getElementById("wynik-gry").style.display = "none";
-        wyniki(); 
+        wyniki()
+        
     }
 
     function Pass(){
