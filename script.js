@@ -52,8 +52,8 @@ class TaliaKart {
 
     noweRozdanie(){
         this.indeksUkrytejKarty = -1;
-        this.mojeKarty = "";
-        this.krupierKarty = "";
+            this.mojeKarty = "";
+            this.krupierKarty = "";
         for(let i = 0; i < 2; i++){
             let moja = this.talia.splice(0, 1)[0];
             let krupier = this.talia.splice(0, 1)[0];
@@ -63,61 +63,55 @@ class TaliaKart {
         }
     }
 
-    obliczWyniki(){
+    obliczWynikGracza(){
         let m = this.mojeKarty.split(",");
-        let k = this.krupierKarty.split(",");
-
         let sumaMoje = 0;
-        let sumaKrupier = 0;
-        let ukrytaKarta = 0;
-
         for(let i = 0; i < m.length; i++) {
             let val = m[i].split("-")[1];
-
-            if(!isNaN(parseInt(val))){
-                sumaMoje += parseInt(val);
-            }
-            else if(["K", "Q", "J"].includes(val)){
-                sumaMoje += 10;
-            }
-            else if(val === "A"){
-                sumaMoje += 11;
-            }
+        if(!isNaN(parseInt(val))){
+            sumaMoje += parseInt(val);
         }
-
-        for(let i = 0; i < k.length; i++){
-            let val = k[i].split("-")[1];
-            this.indeksUkrytejKarty++;
-            
-            if(!isNaN(parseInt(val))){
-                sumaKrupier += parseInt(val);
-                if (this.indeksUkrytejKarty == 1){
-                    ukrytaKarta = parseInt(val);
-                }
-            }
-            else if(["K", "Q", "J"].includes(val)){
-                sumaKrupier += 10;
-                if (this.indeksUkrytejKarty == 1){
-                    ukrytaKarta = 10;
-                }
-            }
-            else if(val === "A"){
-                sumaKrupier += 11;
-                if (this.indeksUkrytejKarty == 1){
-                    ukrytaKarta = 11;
-                }
-            }
+        else if(["K", "Q", "J"].includes(val)){
+            sumaMoje += 10;
         }
-
-        this.ukrytaKarta = ukrytaKarta;
-        this.sumaMoje = sumaMoje;
-        this.sumaKrupier = sumaKrupier - ukrytaKarta;
-
-        return {
-            sumaMoje: this.sumaMoje,
-            sumaKrupier: this.sumaKrupier
-        };
+        else if(val === "A"){
+            sumaMoje += 11;
+        }
     }
+        this.sumaMoje = sumaMoje;
+        return sumaMoje;
+    }
+
+    obliczWynikKrupiera(pokazUkryta = false) {
+        let k = this.krupierKarty.split(",");
+        let sumaKrupier = 0;
+
+    for (let i = 0; i < k.length; i++) {
+        let val = k[i].split("-")[1];
+        let wartosc = 0;
+
+        if(!isNaN(parseInt(val))){
+            wartosc = parseInt(val);
+        }else if (["K", "Q", "J"].includes(val)){
+            wartosc = 10;
+        }else if (val === "A"){
+            wartosc = 11;
+        }
+
+    
+        if(i === 1 && !pokazUkryta){
+            this.ukrytaKarta = wartosc;
+            continue;
+        }
+
+        sumaKrupier += wartosc;
+    }
+
+    this.sumaKrupier = sumaKrupier;
+    return this.sumaKrupier;
+}
+
+
 
     generujHTMLKart(tablicaKart){
         if (this.sumaMoje < 21) {
@@ -153,17 +147,15 @@ class TaliaKart {
 
     dobierzKartyKrupiera(){
         this.sumaKrupier += this.ukrytaKarta;
+     
         this.ukrytaKarta = 0;
 
         while(this.sumaKrupier < 17 && this.talia.length > 0){
             let karta = this.talia.splice(0, 1)[0];
             this.krupierKarty += (this.krupierKarty ? "," : "") + karta;
-            this.obliczWyniki();
+            this.obliczWynikKrupiera(true);
         }
-        if(this.ukrytaKarta > 0){
-            this.sumaKrupier += this.ukrytaKarta;
-            this.ukrytaKarta = 0;
-        }
+       
         return this.krupierKarty.split(",");
     }
 
@@ -203,18 +195,21 @@ function rozdaj(){
     document.getElementById("karty").innerHTML = taliaKart.wypiszTalię();
 }
 
-function pokazWyniki(){
-    const wynik = taliaKart.obliczWyniki();
-    document.getElementById("krupierwynik").innerHTML = "krupier wynik  " + wynik.sumaKrupier;
-    document.getElementById("mojwynik").innerHTML = "wynik moj:" + wynik.sumaMoje;
+function pokazWynikKrupiera(pokazUkryta = false){
+    document.getElementById("krupierwynik").innerHTML = "krupier wynik  " + taliaKart.obliczWynikKrupiera(pokazUkryta);
 }
+
+function pokazWynikGracza(){
+    document.getElementById("mojwynik").innerHTML = "wynik moj:" + taliaKart.obliczWynikGracza();
+}
+
 
 function dobierzMojaKarte(){
     const karta = taliaKart.dobierzKarte();
     const kartaHTML = taliaKart.generujHTMLKart([karta]);
     document.getElementById("mojekarty").innerHTML += kartaHTML;
     document.getElementById("karty").innerHTML = taliaKart.wypiszTalię();
-    pokazWyniki()
+    pokazWynikGracza()
 }
 
 function resetuj(){
@@ -225,7 +220,8 @@ function resetuj(){
     document.getElementById("krupierkarty").innerHTML = taliaKart.KrupierKartyHTML();
     document.getElementById("karty").innerHTML = taliaKart.wypiszTalię();
     document.getElementById("wynik-gry").style.display = "none";
-    pokazWyniki()
+    pokazWynikKrupiera()
+    pokazWynikGracza()
 }
 
 function pasuj(){
@@ -235,15 +231,18 @@ function pasuj(){
     if (krupierKartyImg.length > 1) {
         krupierKartyImg[1].classList.remove("karta-czarna");
     }
+   
     document.getElementById("krupierkarty").innerHTML = taliaKart.KrupierKartyHTMLPelne();
+    pokazWynikKrupiera(true);
     document.getElementById("krupierwynik").innerHTML = "krupier wynik  " + taliaKart.sumaKrupier;
     document.getElementById("wynik-gry").style.display = "block";
     document.getElementById("wynik-gry").innerHTML = taliaKart.sprawdzWynik();
-    pokazWyniki()
+    
 }
 
 window.onload = function (){
     przygotujTalię();
     rozdaj();
-    pokazWyniki();
+    pokazWynikKrupiera();
+    pokazWynikGracza();
 };
