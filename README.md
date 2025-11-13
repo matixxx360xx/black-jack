@@ -46,5 +46,3 @@ The visual aspect was prioritized to deliver a *hi-fi* interface:
 ✅ **Project Complete.** All Black Jack functionalities are implemented, and the code has undergone thorough refactoring and styling.
 
 ***
-
-📧 **Contact:** [Your Email or GitHub Profile]
