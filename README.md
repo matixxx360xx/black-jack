@@ -33,7 +33,7 @@ The visual aspect was prioritized to deliver a *hi-fi* interface:
 ## 🚀 How to Run the Project
 1.  **Clone the Repository:**
     ```bash
-    git clone [LINK_TO_YOUR_REPOSITORY]
+    git clone https://github.com/matixxx360xx/black-jack.git
     ```
 2.  **Image Files:**
     Ensure an `image/` folder exists in the root directory containing the card SVG files, following the format used in the code (`[SUIT]-[VALUE].svg`).
