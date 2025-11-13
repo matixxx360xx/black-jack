@@ -262,6 +262,7 @@ function dobierzMojaKarte(){
 function resetuj(){
     // Sprawdzam, czy talia jest na wyczerpaniu, i resetuję ją, jeśli tak
     if (taliaKart.talia.length < 10) {
+        taliaKart.talia = [];
         przygotujTalię();
     }
     taliaKart.noweRozdanie(); // Nowe karty
