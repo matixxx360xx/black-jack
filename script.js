@@ -233,12 +233,12 @@ function rozdaj(){
 
 // Wyświetla wynik krupiera (domyślnie pokazuje tylko wynik z pierwszej karty)
 function pokazWynikKrupiera(pokazUkryta = false){
-    document.getElementById("krupierwynik").innerHTML = "wynik krupier: " + taliaKart.obliczWynikKrupiera(pokazUkryta);
+    document.getElementById("krupierwynik").innerHTML = "wynik Krupiera: " + taliaKart.obliczWynikKrupiera(pokazUkryta);
 }
 
 // Wyświetla mój wynik
 function pokazWynikGracza(){
-    document.getElementById("mojwynik").innerHTML = "wynik moj: " + taliaKart.obliczWynikGracza();
+    document.getElementById("mojwynik").innerHTML = "wynik Gracza: " + taliaKart.obliczWynikGracza();
 }
 
 
